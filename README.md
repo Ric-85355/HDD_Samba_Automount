@@ -30,7 +30,8 @@
 Расположение и имя файла `/etc/systemd/system/hotswap-check.service`
 Содержание смотри в файлах.
 После создания файла-сервиса перезапускаем systemd демон:
-``` sudo systemctl daemon-reload
+```
+sudo systemctl daemon-reload
 sudo systemctl enable hotswap-check.service
 ```
 ### 7. Проверка опции allow_all
