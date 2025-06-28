@@ -1,10 +1,38 @@
 # HDD_Samba_Automount
+
+## Description
+
+A complete solution for automatic mounting and Samba sharing of hotswappable HDD drives on Linux servers. The system detects drives inserted into hotswap trays at boot time and dynamically configures network sharing.
+
+### Key Features
+- **Automatic detection** of hotswap drives at system startup
+- **Dynamic Samba configuration** - shares are created/removed based on drive presence
+- **Multi-filesystem support** - handles both NTFS (via ntfs-3g) and Linux filesystems
+- **Comprehensive logging** with detailed status reporting
+- **Systemd integration** for reliable service management
+- **Graceful handling** of drive removal and insertion
+
+### Components Included
+- Main detection and mounting script (`check-hotswap.sh`)
+- Systemd service configuration for boot-time execution
+- Dynamic Samba configuration fragment management
+- Complete setup documentation with step-by-step instructions
+
+### Use Case
+Perfect for servers with hotswap drive bays where archive or backup drives need to be automatically accessible over the network without manual intervention.
+
+### Requirements
+- Linux system with systemd
+- Samba server
+- ntfs-3g package (for NTFS support)
+- Hotswap drive bay or removable drive slot
 Automatic mounting of archive HDD in slot and connecting it to Samba
 
 The server has a slot for quick HDD installation (drive tray).
 The idea is to make the server check on startup if there's an HDD in the tray and, if there is, automatically mount it and share it via Samba.
 The solution includes several components.
 
+## How to Use
 ### 1. Directory where it mounts
 ```
    sudo mkdir /mnt/hotswap
