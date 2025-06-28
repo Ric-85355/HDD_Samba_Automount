@@ -1,0 +1,11 @@
+[Unit]
+Description=Проверка и монтирование hotswap-диска при загрузке
+After=network.target local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/check-hotswap.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
