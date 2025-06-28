@@ -1,42 +1,46 @@
 # HDD_Samba_Automount
-Автоматическое монтирование архивного HDD в слоте и подключение его в Samba
-На сервере есть слот для быстрой установки HDD диска (салазки).
-Идея в том, чтобы заставить сервер при запуске проверять, если ли HDD в салазках и, если есть, автоматически монтировать его и расшаривать в Samba.
-Решение включает в себя несколько составляющих.
-### 1. Каталог, куда монтируется
+Automatic mounting of archive HDD in slot and connecting it to Samba
+
+The server has a slot for quick HDD installation (drive tray).
+The idea is to make the server check on startup if there's an HDD in the tray and, if there is, automatically mount it and share it via Samba.
+The solution includes several components.
+
+### 1. Directory where it mounts
 ```
    sudo mkdir /mnt/hotswap
    sudo chown -R nobody:nogroup /mnt/hotswap
    sudo chmod 777 /mnt/hotswap
 ```
-### 2. Основной скрипт 
-Поместить в `/usr/local/bin/`, используется имя `check-hotswap.sh` (см. файлы)  
-Проверить, что в начале скрипта переменная DEVICE указывает на следующий диск в /dev/sdX1
 
-### 3. Добавить `include` в `/etc/samba/smb.conf`
+### 2. Main script 
+Place in `/usr/local/bin/`, using the name `check-hotswap.sh` (see files)  
+Check that the DEVICE variable at the beginning of the script points to the next drive in /dev/sdX1
+
+### 3. Add `include` to `/etc/samba/smb.conf`
    ```include = /etc/samba/hotswap_auto.conf```  
-Подключение динамически формируемой конфигурация при наличии диска (см.далее)
+Connecting dynamically generated configuration when disk is present (see below)
 
-### 4. Проверить наличие ntfs-3g
+### 4. Check for ntfs-3g availability
 `sudo apt install ntfs-3g`
 
-### 5. Динамически формируемая конфигурация при наличии диска
-Создается просто пустой файл, он заполняется основным скриптом
+### 5. Dynamically generated configuration when disk is present
+Creates a simple empty file, it gets filled by the main script
    ```
    sudo touch /etc/samba/hotswap_auto.conf
    sudo chmod 644 /etc/samba/hotswap_auto.conf
 ```
-### 6. Создание systemd-сервиса
-Расположение и имя файла `/etc/systemd/system/hotswap-check.service`
-Содержание смотри в файлах.
-После создания файла-сервиса перезапускаем systemd демон:
+
+### 6. Creating systemd service
+Location and filename `/etc/systemd/system/hotswap-check.service`
+See files for content.
+After creating the service file, restart the systemd daemon:
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable hotswap-check.service
 ```
-### 7. Проверка опции allow_all
-Проверить, что опция `user_allow_other` раскомментирована в `/etc/fuse.conf`   
 
-## Результат работы
-Если все сделано правильно - после запуска сервера с вставленным в салазки диском он должен примонтироваться и быть доступным по Samba в ресурсе hotswap
+### 7. Check allow_all option
+Check that the `user_allow_other` option is uncommented in `/etc/fuse.conf`   
 
+## Result
+If everything is done correctly - after starting the server with a disk inserted in the tray, it should mount and be available via Samba in the hotswap resource
